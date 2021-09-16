@@ -5,14 +5,10 @@ import (
 )
 
 // Tasks are a collection of tasks that can be done in parallel.
-type tasks []*Task
-
-func (ts tasks) WhileDo(name string, f Func, opts ...Option) tasks {
-	return append(ts, newTask(name, f, opts...))
-}
+type Tasks []*Task
 
 // Run executes all tasks in parallel.
-func (ts tasks) Run() error {
+func (ts Tasks) Run() error {
 	switch len(ts) {
 	case 0:
 		return nil

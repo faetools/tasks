@@ -7,15 +7,16 @@ func FirstDo(name string, f Func, opts ...Option) *Task {
 
 // ThenDo specifies a task to be run after this one.
 // Returns the new task.
-func (t *Task) ThenDo(name string, f Func, opts ...Option) *Task {
-	updated, next := t.t.ThenDo(name, f, opts...)
-	t.t = updated
+func (t *Task) ThenDo(name string, f Func, opts ...Option) (next *Task) {
+	next = newTask(name, f, opts...)
+	t.then = append(t.then, next)
+
+	next.Requires(t)
 	return next
 }
 
 // WhileDo specifies a task to be run in parallel to this task.
-// Returns the task representing the collection of tasks to be run.
 func (t *Task) WhileDo(name string, f Func, opts ...Option) *Task {
-	t.t = t.t.WhileDo(name, f, opts...)
+	t.while = append(t.while, newTask(name, f, opts...))
 	return t
 }

@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-const sleepTime = time.Millisecond
+const sleepTime = time.Millisecond * 100
 
 var errDone = errors.New("done")
 
@@ -21,11 +21,11 @@ func sleep() error {
 	return nil
 }
 
-func quickErr() error { return errDone }
+func quickErr() error { return errDone } // nolint:wrapcheck
 
 func sleepErr() error {
 	time.Sleep(sleepTime)
-	return errDone
+	return errDone // nolint:wrapcheck
 }
 
 func TestDoWithContext(t *testing.T) {
